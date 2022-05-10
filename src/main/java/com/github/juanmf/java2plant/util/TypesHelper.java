@@ -28,6 +28,7 @@ import java.util.logging.Logger;
  */
 public class TypesHelper {
     private static final Logger logger = Logger.getLogger("Main");
+//    private static final String REGEX_FOR_PACKAGE = "(((interface|class|num))? ?([\\w\\[][_\\w\\d\\$]+\\.)+)";
     private static final String REGEX_FOR_PACKAGE = "((([ice])(nterface|lass|num))? ?([\\w\\[][_\\w\\d\\$]+\\.)+)";
     private static final Map<String, Class<?>> BOXING_TYPES_FOR_PRIMITIVES = ImmutableMap.<String, Class<?>>builder()
             .put("boolean", Boolean.class)

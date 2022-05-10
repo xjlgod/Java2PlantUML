@@ -45,6 +45,12 @@
             <version>3.4</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.4.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <pluginManagement>
@@ -73,22 +79,22 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <!--groupId>com.github.juanmf</groupId-->
-                <artifactId>java2PlantUML-maven-plugin</artifactId>
-                <!-- This version should be consistent with this pom's /project/version-->
-                <version>1.0.1</version>
-                <configuration>
-                    <goalPrefix>java2PlantUML</goalPrefix>
-                    <parse.relationTypeFilter>FILTER_ALLOW_ALL_RELATIONS</parse.relationTypeFilter>
-                    <parse.classesFilter>FILTER_FORBID_ANONIMOUS</parse.classesFilter>
-                    <parse.relationsFilter>FILTER_CHAIN_RELATION_STANDARD</parse.relationsFilter>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>com.github.juanmf</groupId>-->
+<!--                <artifactId>java2PlantUML-maven-plugin</artifactId>-->
+<!--                &lt;!&ndash; This version should be consistent with this pom's /project/version&ndash;&gt;-->
+<!--                <version>1.0.1</version>-->
+<!--                <configuration>-->
+<!--                    <goalPrefix>java2PlantUML</goalPrefix>-->
+<!--                    <parse.relationTypeFilter>FILTER_ALLOW_ALL_RELATIONS</parse.relationTypeFilter>-->
+<!--                    <parse.classesFilter>FILTER_FORBID_ANONIMOUS</parse.classesFilter>-->
+<!--                    <parse.relationsFilter>FILTER_CHAIN_RELATION_STANDARD</parse.relationsFilter>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 </project>

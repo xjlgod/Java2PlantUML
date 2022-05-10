@@ -16,13 +16,7 @@
 package com.github.juanmf.java2plant.render;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -265,7 +259,7 @@ public class PlantRenderer {
         void addMember(Member m, List<String> plantMembers);
     }
 
-    static class FieldPrinter implements MemberPrinter {
+    public static class FieldPrinter implements MemberPrinter {
         @Override
         public void addMember(Member m, List<String> plantMembers) {
             Field f = (Field) m;
@@ -277,8 +271,20 @@ public class PlantRenderer {
             String msg = String.format("%s %s : %s",
                     Modifiers.forModifier(f.getModifiers()),
                     f.getName(),
-                    TypesHelper.getSimpleName(f.getGenericType().toString()));
+                    correctParameterType(TypesHelper.getSimpleName(f.getGenericType().toString())));
             plantMembers.add(msg);
+        }
+
+        public String correctParameterType(String origin) {
+            origin = origin.trim();
+            if (origin.contains("<")) {
+                return origin;
+            }
+            String[] splits = origin.split(" ");
+            if (splits.length > 1) {
+                return splits[splits.length - 1];
+            }
+            return splits[0];
         }
     }
 
@@ -311,15 +317,17 @@ public class PlantRenderer {
 
         private String buildParams(Member m) {
             StringBuilder params = new StringBuilder();
-            Type[] paramClasses = m instanceof Method
-                    ? ((Method) m).getGenericParameterTypes()
-                    : ((Constructor<?>) m).getGenericParameterTypes();
-            Iterator<? extends Type> it = Arrays.asList(paramClasses).iterator();
+            Parameter[] parameters = m instanceof Method
+                    ? ((Method) m).getParameters()
+                    : ((Constructor<?>) m).getParameters();
+            Iterator<? extends Parameter> it = Arrays.asList(parameters).iterator();
             while (it.hasNext()) {
-                Type c = it.next();
-                String primitiveType = getPrimitveTypeString(c);
+                Parameter p = it.next();
+                params.append(p.getName() + " ");
+                String primitiveType = getPrimitveTypeString(p);
                 if (StringUtils.isEmpty(primitiveType)) {
-                    params.append(TypesHelper.getSimpleName(c.toString()));
+                    params.append(TypesHelper.getSimpleName(p.getParameterizedType().getTypeName()));
+//                    if
                 } else {
                     params.append(primitiveType);
                 }
@@ -340,23 +348,23 @@ public class PlantRenderer {
          * [D = double
          * [C = char
          */
-        private String getPrimitveTypeString(Type c) {
+        private String getPrimitveTypeString(Parameter c) {
             String result = null;
-            if (c == byte[].class) {
+            if (c.getType() == byte[].class) {
                 result = "byte []";
-            } else if (c == boolean[].class) {
+            } else if (c.getType()  == boolean[].class) {
                 result = "boolean []";
-            } else if (c == short[].class) {
+            } else if (c.getType()  == short[].class) {
                 result = "short []";
-            } else if (c == int[].class) {
+            } else if (c.getType()  == int[].class) {
                 result = "int []";
-            } else if (c == long[].class) {
+            } else if (c.getType()  == long[].class) {
                 result = "long []";
-            } else if (c == float[].class) {
+            } else if (c.getType()  == float[].class) {
                 result = "float []";
-            } else if (c == double[].class) {
+            } else if (c.getType()  == double[].class) {
                 result = "double []";
-            } else if (c == char[].class) {
+            } else if (c.getType()  == char[].class) {
                 result = "char []";
             }
             return result;
